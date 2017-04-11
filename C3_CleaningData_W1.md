@@ -22,16 +22,60 @@ indicating the names of the variables
   * For windows \\ backslash
 
 ### Directories
-  * **file.exists("dirName")** will check if th dir exists
+  * **file.exists("dirName")** will check if the dir exists
   * **dir.create("dirName")** will create a dir if it doesn't exists
   * Example: > if(!file.exists("data")) {dir.create("data")}
 
 ### Getting data from internet
   * **download.file(url,destination_file,method)** downloads a file
   * Example: *download_data.r*
+  * For *http* url
+  * For *https* use *method = "curl"* on Mac
+  * If the file is big it may take a while
+  * Be sure to record when you download (> dateDownload <- date())
   
-  
-  
+### Reading local flat files
+  * **read.table(file, header, sep, row.names, nrows)**
+  * Load flat files into memory RAM
+  * Read *.csv and *.csv2
+  * **read.csv(file)** stablish *sep=","* and *header = TRUE* by default
+  * *quote = ""* you get no quotes in the files, this solves a lot of problems
+  * *na.strings* set the character that represents a missing value
+  * *nrows* rows number to read the fiels, nrows = 10 read 10 lines
+  * *skip* a number of lines before starting to read
 
+### Reading Excel files
+  * In the download.file the extension of the destination files should be .xlsx
+  * library(xlsx)
+  * cameraData <- read.xlsx("./data/cameras.xlsx", sheetIndex=1, header=TRUE)
+  * You can read a certain number of cols and rows using colIndex and rowIndex 
+  * **write.xlsx** write excel similar arguments
+  * XLConnect package has more options for writting and mainipulating Excel
+  * Recomended using csv and txt better than xlsx
+  * Example: read_xlsx.r
+  
+### Reading XML
+  * Markup language for structured data for internet apps
+  * Components: Markup (text structure labels) and Content (document text)
+  * Tags (labels): start (<section>), end (</section>) or empty (<line-break/>)
+  * Example: <Greeting> Hello, world </Greeting>
+  * Tags can have atributes
+  * Example: read_xml.r
+  * XPath is a language to extract data from xml
 
+### Reading JSON
+  * Javascript Object Notation: Lightweight data storage
+  * Similar to XML
+  * Example: read_json.r
+
+### Using data.table
+  * More efficient version of data.frame
+  * Create data table just like data frames
+  * Example: data_table.r  
+  
+  
+  
+  
+  
+  
 
