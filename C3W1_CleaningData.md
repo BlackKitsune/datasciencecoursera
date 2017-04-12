@@ -1,4 +1,4 @@
-# Course 3 Data Science: Getting and Cleaning Data (JH University Coursera)
+# C3 Data Science: Getting and Cleaning Data (JH University Coursera)
 
 ## Week 1
 
@@ -27,11 +27,11 @@ Each colunm is a variable and every row is an observation with a first row indic
 
 ### Getting data from internet
   * **download.file(url,destination_file,method)** downloads a file
-  * Example: *download_data.r*
+  * Example: *C3W1_download_data.r*
   * For *http* url
   * For *https* use *method = "curl"* on Mac
   * If the file is big it may take a while
-  * Be sure to record when you download (> dateDownload <- date())
+  * Be sure to record when you download (\> dateDownload <- date())
   
 ### Reading local flat files
   * **read.table(file, header, sep, row.names, nrows)**
