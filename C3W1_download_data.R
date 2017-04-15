@@ -1,6 +1,6 @@
 #### Download file from the web
 
-home_dir <- "D:/Isabelita/Data Science/CourseraDS"
+home_dir <- "D:/..../Data Science/CourseraDS"
 work_folder <- "/C3-W1"
 work_dir <- paste(c(home_dir, work_folder), collapse = "")
 setwd(work_dir)
