@@ -35,8 +35,8 @@ names(chicago)
 # look at the columns between two of them
 head(select(chicago, city:dptp))
 # use the - to avoid some column
-head(select(chicago, -(city:dptp))
-
+head(select(chicago, -(city:dptp)))
+     
 # The equivalent code to do this in R without dplyr
 # Find the indexes for city and dptp columns...
 i <- match("city", names(chicago))
@@ -72,27 +72,28 @@ head(select(chicago, pm25, pm25dtrend))
 
 ## Function group_by(): Group according to a categorical variable
 # Create the variable to categorize...
-chicago <- mutate(chicago, tempcat = factor(1*(tmpd > 80, labels = c("cold", "hot")))
+chicago <- mutate(chicago, tempcat = factor(1*(tmpd > 80), labels = c("cold", "hot")))
 # ... and group by that new variable
 hotcold <- group_by(chicago, tempcat)
 hotcold
 # Summarize the new var, to know the mean pm25, the max of o3 and the median of no2
 summarize(hotcold, pm25 = mean(pm25, na.rm = TRUE),
-                   o3 = max(o3mean2),
-                   no2 = median(no2tmean2))
+         o3 = max(o3mean2),
+         no2 = median(no2tmean2))
 # Categorize using the year
 chicago <- mutate(chicago, zear = as.POSIXlt(date)$year + 1900)
 years <- group_by(chicago, year)
 # Summarizing the same by year, you can see the trend on time
 summarize(hotcold, pm25 = mean(pm25, na.rm = TRUE),
-                   o3 = max(o3mean2),
-                   no2 = median(no2tmean2))
+         o3 = max(o3mean2),
+         no2 = median(no2tmean2))
 
 ## Pipeline operator: %>%
 # Takes the ouput of the sequence and operates with it without intermediate variables
-chicago %>% mutate(month = as.POSIXlt(date)$mon +1) %>% group_by(month)
-        %>% summarize(pm25 = mean(pm25, na.rm = TRUE),
-                   o3 = max(o3mean2),
-                   no2 = median(no2tmean2))
-                   
+chicago %>% mutate(month = as.POSIXlt(date)$mon +1) %>% group_by(month) %>%
+        summarize(pm25 = mean(pm25, na.rm = TRUE),
+                  o3 = max(o3mean2),
+                  no2 = median(no2tmean2))
+
 # Additional benefits: can work with data.table and SQL interface
+
