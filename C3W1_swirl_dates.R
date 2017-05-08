@@ -4,6 +4,7 @@
 rm(list = ls())
 
 # Begin 
+install_from_swirl("Getting and Cleaning Data")
 library(swirl)
 swirl()
 
