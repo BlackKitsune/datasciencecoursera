@@ -1,6 +1,6 @@
 ### C4W1 - SWIRL Practice
 
-## Principles of Analytic Graphs
+## PRINCIPLES OF EXPLORATORY GRAPHICS
 
 #   1. Comparisons: Show evicence relative to other evidence
 #   2. Causality, mechanisms, explanations and systematic structure
@@ -9,7 +9,7 @@
 #   5. Description/documentation of the evidence (labels, scales, sources...)
 #   6. Content is the king (quality, relevance and integrity)
 
-## Exploratory Graphs: Tool for data scientists 
+## EXPLORATORY GRAPHS: Tool for data scientists 
 
 # To understand data properties 
 # To find patterns in data
@@ -241,8 +241,7 @@ plot(east$latitude, east$pm25, main = "East")
 #     c) Suggest modeling strategies for the "next step"
 
 
-## Graphic Devices in R
-
+## GRAPHIC DEVICES IN R
 
 # Short lesson introducing you to graphics devices in R.
 # What IS a graphics device? Where you can make a plot appear
@@ -337,3 +336,26 @@ dev.copy(png, file = "geyserplot.png")
 
 dev.off()
 
+## BASE PLOTTING SYSTEM
+
+# BASE PLOT: Artist palette, you cannot go back on the plot to correct
+
+with(cars, plot(speed, dist))
+text(mean(cars$speed),max(cars$dist),"SWIRL rules!")
+
+# LATTICE: Entire plot specified at once, not allowed add in separate calls
+
+head(states)
+table(states$region)
+xyplot(Life.Exp ~ Income | region, data = state, layout = c(4,1))
+xyplot(Life.Exp ~ Income | region, data = state, layout = c(2,2))
+
+# GGPLOT2: Combines the best of base + lattice, uses graphic grammar
+
+head(mpg)
+dim(mpg)
+table(mpg$model)
+qplot(disp, hwy, data = mpg)
+
+
+## 
