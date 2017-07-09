@@ -358,4 +358,89 @@ table(mpg$model)
 qplot(disp, hwy, data = mpg)
 
 
-## 
+## BASE PLOTTING SYSTEM
+
+# Graphics R engine: Graphics package (plot, hist,...) + Graph edevices (Implementing graphs)
+# Base = Graphs + Adds
+# Disadvantage = no going back once the plot has started
+# Calling to plot, hist ... opens a graph device (default if not specify)
+# Arguments(title, axis, margins, labels,...)
+# Dataset airquality
+
+head(airquality)
+range(airquality$Ozone, na.rm = TRUE)  # Erase the na
+hist(airquality$Ozone)    # Distribution of measurements
+table(airquality$Month)   # Data covers 5 months
+boxplot(Ozone ~ Month, data = airquality, 
+        xlab = "Month", ylab = "Ozone (ppb)",
+        col.axis = "blue", col.lab = "red",
+        main = "Ozone and Wind in NYC")
+
+# First argument Ozone as a function of months
+# dataset for the measurements
+# x and y labels
+# color of the axis and the labels
+# main title
+
+# SCATTERPLOT:
+
+with(airquality, plot(Wind, Ozone))
+title(main = "Ozone and Wind in NYC")
+
+# PAR: Plotting paramenters
+
+length("par")    # Values set to paramenters
+names("par")     # names for the set of paramentes
+par("pin")       # Plot dimension en iches
+par("fg")        # foreground color
+par("bg")        # background color
+par("pch")       # plot character (open circle by default)
+par("lty/lwd")   # line type/width
+par("xlab/ylab") # x/y axis labels
+par("las")       # axis labels orientation
+par("mar")       # margins size
+par("oma")       # outer margin size
+par("mfrow/mfcol")      # num plots per row/col filled by rows/cols first
+
+dev.off()        # Reset to defaults
+plot.new         # Reset to defaults
+
+# ANNOTATING FUNCTIONS: text, points, title, lines, legend
+
+# Set the plot but without data
+plot(airquality$Wind, airquality$Ozone, type = "n")
+
+# Add main title
+title(main = "Wind and Ozone NYC")
+
+# Add the data
+may <- subset(airquality, Month == 5)
+points(may$Wind, may$Ozone, col = "blue", pch = 17)
+notmay <- subset(airquality, Month != 5)
+points(notmay$Wind, notmay$Ozone, col = "red", pch = 8)
+
+# Line with the median vaule
+abline(v = median(airquality$Wind), lty = 2, lwd =2)
+
+
+# MULTIPLOTS
+
+# Create the frame with the rows and coloumns
+par(mfrow = c(1,2))
+
+# Add the plots
+plot(airquality$Wind, airquality$Ozone, main = "Ozone and Wind")
+plot(airquality$Solar.R, airquality$Ozone, main = "Ozone and Solar Radiation")
+
+# Create the frame with the rows, cols and in/out margins
+# margins(botton, left, up, right)
+par(mfrow = c(1,3), mar = c(4,4,2,1), oma = c(0,0,2,0))
+
+# Add the plots
+plot(airquality$Wind, airquality$Ozone, main = "Ozone and Wind")
+plot(airquality$Solar.R, airquality$Ozone, main = "Ozone and Solar Radiation")
+plot(airquality$Temp, airquality$Ozone, main = "Ozone and Temperature")
+
+# Main outer tittle
+mtext("Ozone and Weather in NYC", outer = TRUE)
+
