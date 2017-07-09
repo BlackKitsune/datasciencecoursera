@@ -231,7 +231,6 @@ plot(east$latitude, east$pm25, main = "East")
 
 # See how R took care of all the details for you? Nice, right? 
 # It looks like there are more dirty counties in the east but the extreme dirt (greater than 15) is in the west. 
-  Figure: goodPlot4.R
 
 # Let's summarize and review. 
 # Which of the following characterizes exploratory plots? quick and dirty
@@ -240,3 +239,101 @@ plot(east$latitude, east$pm25, main = "East")
 #     a) Summarize the data (usually graphically) and highlight any broad features; 
 #     b) Explore basic questions and hypotheses (and perhaps rule them out); 
 #     c) Suggest modeling strategies for the "next step"
+
+
+## Graphic Devices in R
+
+
+# Short lesson introducing you to graphics devices in R.
+# What IS a graphics device? Where you can make a plot appear
+#   1. SCREEN DEVICE: such as a window on your computer (quarz() Mac, window() Windows and x11() Linux)
+#      Simple aproach (plot, xyplot, qplot) + annotations to the plot
+#   2. FILE DEVICE:
+#      2.1 VECTOR: Line, solid colors, no many points
+#          a) PDF (line, resize, portable, no many points)
+#          b) SVG (XML, scalable, suports animation and interactiviy, web)
+#          c) WIN META (Old, windows)
+#          d) POSTSCRIPT (Old, resizes, encapsulated, no windows)
+#      2.2 BTITMAP: Many points, natural scenes, web based plots
+#          a) PNG (line, solid colors, lossless compresion, web, many points, not resize)
+#          b) JPG (photography, lossy compresion, no resize, all computers/webs, no line)
+#          c) TIFF (Old, lossless compresion, metaformat)
+#          d) BMP (Native windows bitmat format)
+
+# When you make a plot in R, it has to be "sent" to a specific graphics device. 
+# Usually this is the screen (the default device), especially when you're doing exploratory work. 
+# You'll send your plots to files when you're ready to publish them
+
+
+# Run the R command ?Devices to see what graphics devices are available on your system.
+
+?Devices
+ 
+# SCREEN PLOT: 
+
+with(faithful, plot(eruptions, waiting))
+  
+# See how R created a scatterplot on the screen for you? 
+# This shows that relationship between eruptions of the geyser Old Faithful and waiting time. 
+
+# Now use the R function title with the argument main set equal to the string "Old Faithful Geyser data". 
+# This is an annotation to the plot.
+
+title(main = "Old Faithful Geyser data")
+  
+# Now run the command dev.cur(). This will show you the current plotting device, the screen.
+
+# FILE DEVICE:
+
+pdf(file="myplot.pdf")
+
+# You then call the plotting function (if you are using a file device, no plot will appear on the screen). 
+# Run the with command again to plot the Old Faithful data. 
+  
+with(faithful, plot(eruptions, waiting))
+title(main = "Old Faithful Geyser data")
+
+# Finally, when plotting to a file device, you have to close the device with the command dev.off(). 
+# This is very important! Don't do it yet, though. 
+# After closing, you'll be able to view the pdf file on your computer.
+ 
+# Although it is possible to open multiple graphics devices (screen, file, or both), 
+# when viewing multiple plots at once, plotting can only occur on one graphics device at a time.
+
+# The currently active graphics device can be found by calling dev.cur(). 
+# Try it now to see what number is assigned to your pdf device.
+
+dev.cur()
+
+# Now use dev.off() to close the device.
+
+dev.off()
+
+# Now rerun dev.cur() to see what integer your plotting window is assigned.
+
+dev.cur()
+
+# The device is back to what it was when you started. As you might have guessed,  
+# every open graphics device is assigned an integer greater than or equal to 2. 
+# You can change the active graphics device with dev.set(<integer>) where <integer> is the 
+# number associated with the graphics device you want to switch to.
+
+# You can also copy a plot from one device to another. 
+# This can save you some time but beware! Copying a plot is not an exact operation, 
+# so the result may not be identical to the original.
+# The function dev.copy copies a plot from one device to another, 
+# and dev.copy2pdf specifically copies a plot to a PDF file.
+
+with(faithful, plot(eruptions, waiting))
+title(main = "Old Faithful Geyser data")
+
+# Now run dev.copy with the 2 arguments: png, and the second file = "geyserplot.png". 
+# This will copy your screen plot to a png file in your working directory 
+# which you can view AFTER you close the device.
+
+dev.copy(png, file = "geyserplot.png")
+
+# Don't forget to close the PNG device! Do it NOW!!! Then you'll be able to view the file.
+
+dev.off()
+
