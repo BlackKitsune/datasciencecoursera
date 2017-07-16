@@ -139,26 +139,52 @@ g + geom_point(aes(color = bmicat), size = 4, alpha = 1/2) +
 
 ## Notes about Axis limits
 
-
-
+# Set an spike in the data 
 testdat <- data.frame(x = 1:100, y = rnorm(100))
-testdat`0, 2
+testdat[50, 2] <- 100  ## Outlier!!
 
+# Plot in the normal limits
+plot(testdat$x, testdat$y, type = "l", ylim = c(-3,3))
 
+# ggplot automatically makes to see the outlier
+g <- ggplot(testdat, aes(x = x, y = y))
+g + geom_line()  ## showing the outlier
+g + geom_line() + ylim(-3, 3)  ## only include in the plot the data inside the limit
+g + geom_line() + coord_cartesian(ylim = c(-3, 3))    ## Outlier included
 
+## More complex example: Relation pm25 and nocturanl symptoms vary by BMI and NO2
+# We need to categorize NO2 so we can condition the plotting with cut()
 
+# Calculate the deciles of the data (ranges of the data)
+cutpoints <- quantile(maacs$logno2_new, seq(0,1,length = 4), na.rm = TRUE)
 
+# Cut the data at the deciles and create a new factor variable
+# Cut NO2 in this three ranges returning a factor variable for low, medium, high
+maacs$no2dec <- cut(maacs$logno2_sew, cutpoints)
 
+# See the levels of the newly created factor variable
+levels(maacs$no2dec)
 
+# Plot with:
+#     - Transparency in the points to see the denser areas
+#     - Add smooth linear regression without confidence range
+#     - Multiple panels (normal, overweight for low, medium, hight factor levels)
+#     - Change the labels
+#     - Non default font
 
+## Setup ggplot with data frame 
+g <- ggplot(maacs, aes(logpm25, NocturnalSympt))
 
+## Add layers
+g + geom_point(alpha = 1/3)   ## Add points with transparency
+  + facet_wrap(bmicat ~ no2dec, nrow = 2, ncol = 4)   ## Make panels
+  + geom_smooth(method = "lm", se = FALSE,  col = "steelblue"))   ## Add smoother
+  + theme_bw(base_family = "Avenir", base_size = 10)  ## Change theme b/w, font, small size
+  + labs(x = expression("log " * PM[2.5]))      ## Change labels
+  + labs(y = "Nocturnal Symptons")
+  + labs(title = "MAACS Cohort")
 
-
-
-
-
-
-
-
-
+## Summary
+# ggplot2 is very powerful and flexible if you lear the grammar and elements
+# Many more types of plots can be done in R
 
