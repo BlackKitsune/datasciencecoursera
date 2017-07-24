@@ -1,0 +1,119 @@
+#### C4W3 - L2 - K means clustering and Dimension reduction
+
+## K-means Clusterring
+# A partitioning approach:
+#   - Fix a number of clusters
+#   - Get "Centroids" of each cluster (center of gravity)
+#   - Assign things to closest centroid
+#   - Recalculate centroids
+# Requires: defined distance metric + num clusters + initial guess cluster centroid
+# Produces: Cluster centroids final estimate + Assignment each point to cluster
+
+# K - Means example
+set.seed(1234)
+par(mar = c(0, 0, 0, 0,))
+x <- rnorm(12, mean = rep(1:3, each = 4), sd = 0.2)
+y <- rnorm(12, mean = rep(c(1, 2, 1), each = 4), sd = 0.2)
+plot(x, y, col = "blue", pch = 19, cex = 2)
+text(x + 0.05, y + 0.05, labels = as. character(1:12))
+
+# 1. Starting centroids: Randonmly assigned
+# 2. Assign to closest centroid the clusters
+# 3. Recalculate the centroinds (assigning the mean to that cluster for ex.)
+# 4. Recalculate the centroinds (update centroid locations)...
+
+# kmeans(x, centers, iter.max, nstart): implement the kmean algorith
+dataFrame <- data.frame(x, y)
+kameansObj <- kmeans(dataFrame, centers = 3) # With 3 centroids
+names(kmeanObj) # object with different elemnts
+kmeanObj$cluster # for each point what is his cluster
+
+# plot results
+par(mar = rep(0.2, 4))
+plot(x, y, col = kmeanObj$cluster, pch = 19, cex = 2)
+points(kmeanObj$centers, col = 1:3, pch =3, cex = 3, lwd = 3)
+
+## Heatmaps
+set.seed(1234)
+dataMatrix <- as.matrix(dataFrame)[sanple(1:12), ]
+kmeanObj2 <-  kmeans(dataMAtrix, centers = 3)
+par(mfrow = c(1,2), mar = c(2,4,0.1,0.1))
+image(t(dataMatrix)[, nrow(dataMatrix):1], yaxt = "n")
+image(t(dataMatrix)[, order(kmeanObj$cluster)], yaxt = "n")
+
+## Summary
+#   - Requires a number of cluster
+#       * Pick by eye/intuition
+#       * Pick by cross validation/information theory
+#       * Determining the number of clusters
+#   - It is not deterministic: Different clusters and num. of iterations
+
+### Dimension Reduction
+
+## Principal Components Analysis (PCA) and Singular Value Decomposition (SVD)
+
+# Matrix data (random data)
+set.seed(12345)
+par(mar = rep(0.2, 4)
+dataMAtrix <- matrix(rnorm(400), nrow = 40)
+image(1:10, 1:40, t(dataMatrix)[, nrow(DataMatrix):1])
+
+# Cluster the data (no paterns on the data because they are random)
+par(mar = rep(0.2, 4))
+heatmap(dataMatrix)
+
+# Add patter in the data set
+set.seed(678910)
+for(i in 1:40) {
+      # Flip a coin
+      coinFlip <- rbinom(1, size = 1, prob = 0.5)
+      # If coin is heads add a common pattern to that row
+      if (coinFlip) {
+          dataMatrix[i, ] <- dataMAtrix[i, ] + rep(c(0, 3), each = 5)
+      }
+ }
+ 
+ par(mar = rep(0.2, 4))
+ image(1:10, 1:40, t(dataMatrix)[, nrow(DataMatrix):1]) # See a pattern
+ 
+ # Clusterd data again
+par(mar = rep(0.2, 4))
+heatmap(dataMatrix)
+
+# Patterns in rows and columns
+
+hh <- hclust(dist(dataMatrix))
+dataMatrixOrdered <- dataMatrix[hh$order, ]
+par(mfrow = c(1,3))
+image(t(dataMatrix$Ordered)[, nrow(dataMatrixOrdered):1])
+plot(rowMeans(DataMatrixOrdered), 40:1, , xlab = "Row Mean", zlab = "Row", pch = 19)
+plot(colMeans(DataMatrixOrdered), xlab = "Column", zlab = "Column Mean", pch = 19)
+
+## Related problems
+# You have multivariate variables x1, ..., xn so x1 = (X11, ..., x1m)
+# Find a multivariate variables set that is uncorrelated and explain variance
+# If you put all the variables together in one matrix, find the best matrix 
+# created with fewer variables (lower rank) that explains the original data
+# The first goal is statistical and the secon goal is data compression
+
+## Realated solutions: PCA/SVD
+# SVD: If X is a matrix with each variable in a col and each observation in a row
+# then SVD is a matrix decomposition X = UDV ^T
+# Where the columns of U are orthogonal (left singular vectors), the columns of V
+# are orthogonal (right singular vector)  and D is a diagonal matrix (sigula vals)
+
+# PCA: The principal components are equal to the right singular values if you first
+# scale (substract the mean, divide by the standar deviation) the variables.
+
+## Components of the SVD - u and v
+svd1 <- svd(scale(dataMAtrixOrdered))
+par(mfrow = c(1, 3))
+image(t(dataMatrixOrdered)[, nrow(dataMatrixOrdered):1])
+plot(svd$u[, 1], 40:1,  , xlab = "row", ylab = "First left singular vector",
+     pch = 19)
+plot(svd$v[, 1], xlab = "col", ylab = "First right singular vector",pch = 19)
+
+
+
+
+
