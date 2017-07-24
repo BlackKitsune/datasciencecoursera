@@ -109,11 +109,25 @@ plot(colMeans(DataMatrixOrdered), xlab = "Column", zlab = "Column Mean", pch = 1
 svd1 <- svd(scale(dataMAtrixOrdered))
 par(mfrow = c(1, 3))
 image(t(dataMatrixOrdered)[, nrow(dataMatrixOrdered):1])
-plot(svd$u[, 1], 40:1,  , xlab = "row", ylab = "First left singular vector",
+plot(svd1$u[, 1], 40:1,  , xlab = "row", ylab = "First left singular vector",
      pch = 19)
 plot(svd$v[, 1], xlab = "col", ylab = "First right singular vector",pch = 19)
 
+# Variance explained
+par(mfrow = c(1, 2))
+plot(svd1$d, xlab = "col", ylab = "singular vaule", pch = 19)
+plot(svd1$d^2/sum(svd1$d^2), xlab = "col", ylab = "Variance explained prop.", pch = 19)
 
+# Relationship to principal components (They are doing the same thing)
+svd1 <- svd(scale(dataMAtrixOrdered))
+pca1 <- prcomp(dataMatrixOrdered, scale = TRUE)
+plot(pca1$rotation[, 1], 
+     svd1$v[, 1], 
+     pch = 19, 
+     xlab = "Principal component 1",
+     ylab = "Right singular vector 1")
+abline(c(0,1))
 
-
-
+# Component of the SVD - Variance explained
+constantMatrix <- dataMatrixOrdere*0
+for(i in 1:dim(dataMAtrixOrdered)
