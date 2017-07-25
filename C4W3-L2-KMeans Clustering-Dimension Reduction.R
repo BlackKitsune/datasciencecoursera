@@ -206,7 +206,7 @@ par(mfrow=c(1,4))
 image(t(approx1)[, nrow(approx1):1], main="(a)") # with first singular vector
 image(t(approx5)[, nrow(approx5):1], main="(b)") # with five first singular vector
 image(t(approx10)[, nrow(approx10):1], main="(c)")
-image(t(faceData[, nrow(faceData):1], main ="Origianl data)
+image(t(faceData[, nrow(faceData):1], main ="Origianl data")
 # If you use 5-10 first singular vectors you will obtain a good approximation
 
 ## Summary
