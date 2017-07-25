@@ -203,9 +203,16 @@ approx5 <- svd1$u[,1:5] %*% diag(svd1$d[1:5]) %*% t(svd1$v[,1:5])
 approx10 <- svd1$u[,1:10] %*% diag(svd1$d[1:10]) %*% t(svd1$v[,1:10])
 # Plot approximations
 par(mfrow=c(1,4))
-image(t(approx1)[, nrow(approx1):1], main="(a)")
-image(t(approx5)[, nrow(approx5):1], main="(b)")
+image(t(approx1)[, nrow(approx1):1], main="(a)") # with first singular vector
+image(t(approx5)[, nrow(approx5):1], main="(b)") # with five first singular vector
 image(t(approx10)[, nrow(approx10):1], main="(c)")
 image(t(faceData[, nrow(faceData):1], main ="Origianl data)
+# If you use 5-10 first singular vectors you will obtain a good approximation
 
-
+## Summary
+#     - Scale matters
+#     - PC's/SV's may mix real patterns
+#     - Can be conputationally intensive
+#     - Advanced data analysis from an elementary point of view
+#     - Elements of statistical learning
+#     - Alternatives: factor / independent component / latent semantic analysis
