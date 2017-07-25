@@ -130,4 +130,82 @@ abline(c(0,1))
 
 # Component of the SVD - Variance explained
 constantMatrix <- dataMatrixOrdere*0
-for(i in 1:dim(dataMAtrixOrdered)
+for(i in 1:dim(dataMatrixOrdered)[1]{constantMatrix[i, ] <- rep(c(0,1), each=5)}
+svd1 <- svd(constantMatrix)
+par(mfrow=c(1,3))
+image(t(constantMatrix)[,nrow(constantMatrix):1])
+plot(svd1$d, xlab = "col", ylab = "singular vaule", pch = 19)
+plot(svd1$d^2/sum(svd1$d^2), xlab = "col", ylab = "Variance explained prop.", pch = 19)
+    
+# What if we add a second pattern
+set.seed(678910)
+for(i in 1:40) {
+      # Flip a coin
+      coinFlip1 <- rbinom(1, size = 1, prob = 0.5)
+      coinFlip2 <- rbinom(1, size = 1, prob = 0.5)
+      # If coin is heads add a common pattern to that row
+      if (coinFlip1) {
+          dataMatrix[i, ] <- dataMatrix[i, ] + rep(c(0, 5), each = 5)
+      }
+      if (coinFlip2) {
+          dataMatrix[i, ] <- dataMatrix[i, ] + rep(c(0, 5), 5)
+      }
+ }
+ hh <- hclust(dist(dataMatrix))
+ dataMatrixOrdered <- dataMatrix[hh$order, ]
+    
+ # Singular value dcomposition - true patterns
+svd2 <- svd(scale(dataMAtrixOrdered))
+par(mfrow = c(1, 3))
+image(t(dataMatrixOrdered)[, nrow(dataMatrixOrdered):1])
+plot(rep(c(0,1), each=5), pch =19, xlab = "Column", ylab = "Pattern 1")
+plot(rep(c(0,1), 5), pch =19, xlab = "Column", ylab = "Pattern 2")
+    
+# v and patterns of variance in rows
+svd2 <- svd(scale(dataMAtrixOrdered))
+par(mfrow = c(1, 3))
+image(t(dataMatrixOrdered)[, nrow(dataMatrixOrdered):1])
+plot(svd2$v[, 1], pch =19, xlab = "Column", ylab = "First right singular vector")
+plot(svd2$v[, 2], pch =19, xlab = "Column", ylab = "Second right singular vector")
+    
+# d and variance explained
+svd1 <- svd(scale(dataMAtrixOrdered))
+par(mfrow = c(1, 2))
+plot(svd1$d, xlab = "col", ylab = "Singular value", pch = 19)
+plot(svd1$d^2/sum(svd1$d^2), xlab = "col", ylab = "Percent variance explained", pch = 19)
+
+# Missing values
+dataMatrix2 <- dataMatrixOrdered
+dataMatrix2[sample(1:100, size=40, replace=FALSE)] <- NA  ## insert random missing data
+svd1 <- svd(scale(dataMatrix2))  ## Does not work!! Error: infinite of missing values in x
+    
+# Imputing {inpute} (no effect on the running of the svd)
+library(impute)  ## Availabel from bioconductor.org
+dataMatrix2 <- dataMatrixOrdered
+dataMatrix2[sample(1:100, size=40, replace=FALSE)] <- NA
+dataMatrix2 <- inpute.knn(dataMatrix2)$data
+svd1 <- svd(scale(dataMatrix2))
+svd2 <- svd(scale(dataMatrix2))
+par(mfrow=c(1,2)
+plot(svd1$v[,1], pch=19)
+plot(svd2$v[,1], pch=19)
+
+## Face example (lower representation of the face
+load("data/face.rda")
+image(t(faceData[, nrow(faceData):1])
+# Variance explained
+svd1 <- svd(scale(faceData))
+plot(svd1$d^2/sun(svd1^2), pch=19, xlab="Singular vector", ylab = "Variance explained")
+# Create approximations: svd1$d[1] is a constant (%*% matrix multiplication)
+approx1 <- svd1$u[, 1] %*% t(svd1$v[,1]) * svd1$d[1]
+# In these examples we need to make the diagonal matrix out of d
+approx5 <- svd1$u[,1:5] %*% diag(svd1$d[1:5]) %*% t(svd1$v[,1:5])
+approx10 <- svd1$u[,1:10] %*% diag(svd1$d[1:10]) %*% t(svd1$v[,1:10])
+# Plot approximations
+par(mfrow=c(1,4))
+image(t(approx1)[, nrow(approx1):1], main="(a)")
+image(t(approx5)[, nrow(approx5):1], main="(b)")
+image(t(approx10)[, nrow(approx10):1], main="(c)")
+image(t(faceData[, nrow(faceData):1], main ="Origianl data)
+
+
