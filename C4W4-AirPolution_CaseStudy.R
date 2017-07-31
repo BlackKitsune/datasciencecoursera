@@ -71,7 +71,7 @@ str(dates)
 dates <- as. Dates(as.character(dates), "%Y%m%d")
 str(dates)
 hist(dates, "month")  ## Hist of the dates by month (winter and spring max)
-hist(dates[negative]. "month")  ## Less neg values in summer
+hist(dates[negative], "month")  ## Less neg values in summer
 
 # Exploring local change by year to see this mean max relation 1999 - 2012
 # This way we can control possible local changes in NY (State.Code = 36)
@@ -95,7 +95,82 @@ cnt0 <- subset(pm0, State.Code == 36 & county.site %in% both)
 cnt1 <- subset(pm1, State.Code == 36 & county.site %in% both)
 head(cnt0) ## Only NY rows
 
+# Split this data frame by each monitoring 
+sapply(split(cnt0, cnt0$county.site), nrow) ## How many observ for county.site
+sapply(split(cnt1, cnt1$county.site), nrow)
 
+# Subset of data with the code county 63   
+pm0sub <- subset(pm0, State.Code == 36 & County.Code == 63 & Site.ID == 2008)
+pm1sub <- subset(pm1, State.Code == 36 & County.Code == 63 & Site.ID == 2008)
+dim(pm0sub)  ## 150 observations
+dim(pm1sub)  ## 30 observations
 
+# Plot the data as a function of time
+dates0 <- as.Date(as.character(pm0sub$Date), "%Y%m%d")
+str(dates0)
+x0sub <- pm0sub$Sample.Value
+plot(dates0, x0sub)
+           
+dates1 <- as.Date(as.character(pm1sub$Date), "%Y%m%d")
+str(dates1)
+x1sub <- pm1sub$Sample.Value
+plot(dates1, x1sub)
 
+# Plot with two panels
+par(mfrow = c(1,2), mar = c(4, 4, 2, 1))
+plot(dates0, x0sub, pch = 20)
+abline (h = median(x0sub, na.rm = TRUE))
+plot(dates1, x1sub, pch = 20)
+abline (h = median(x1sub, na.rm = TRUE))
 
+# It look confussing because of the y axis range (ylim)
+# Lets look at the range                        
+rng <- range(x0sub, x1sub, na.rm=T)
+par(mfrow = c(1,2), mar = c(4, 4, 2, 1))
+plot(dates0, x0sub, pch = 20, ylim = rng)
+abline (h = median(x0sub, na.rm = TRUE))
+plot(dates1, x1sub, pch = 20, ylim = rng)
+abline (h = median(x1sub, na.rm = TRUE)) 
+# Spread in 1999 that makes the mean higher
+                        
+# Explore at the individual states                        
+# Create a plot with the state average for each year
+head(pm0)  ## State.Code and Sample.Value (average the vaule by state)                        
+mn0 <- with(pm0, tapply(Sample.Value, State.code, mean, na.rm = T))                        
+str(mn0)                        
+summary(mn0)                        
+mn1 <- with(pm1, tapply(Sample.Value, State.code, mean, na.rm = T))                        
+str(mn1)                        
+summary(mn1)                          
+
+d0 <- data.frame(state = names(mn0), mean = mn0)                      
+d1 <- data.frame(state = names(mn1), mean = mn1)                          
+head(d0)   
+head(d1)
+
+# Merge the data by state                        
+mrg <- merge(d0, d1, by = "state")
+dim(mrg)                        
+head(mrg) ## State and mean for each year                       
+                        
+# Plot the merged data                        
+par(mfrow = c(1,1))                        
+with(mrg, plot(rep(1999, 52), mrg[,2], xlim = c(1998, 2013)))                        
+with(mrg, points(rep(2012, 52), mrg[,3], xlim = c(1998, 2013)))                           
+                        
+# Connect the dots to see the trend for the years     
+segments(rep(1999, 52), mrg[,2], rep(2012, 52), mrg[,3])                 
+# The trend is the pollution has decreased over the years                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
